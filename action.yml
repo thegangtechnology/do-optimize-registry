@@ -1,0 +1,16 @@
+# action.yml
+name: 'doctl login'
+description: 'Login to registry using doctl'
+inputs:
+  do-token:
+    description: 'PAT for access registry'
+    required: true
+  registry-name:
+    description: 'Image registry name'
+    required: true
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.do-token }}
+    - ${{ inputs.registry-name }}
