@@ -1,0 +1,19 @@
+name: 'Python Docker Action'
+description: 'Runs a Python script inside a Docker container'
+inputs:
+  do-token:
+    description: 'DigitalOcean Personal Access Token (PAT)'
+    required: true
+  registry-name:
+    description: 'registry that you want to run garbage collection'
+    required: true
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  env:
+    DO_TOKEN: ${{ inputs.do-token }}
+    REGISTRY_NAME: ${{ inputs.registry-name }}
+  args:
+    - ${{ inputs.do-token }}
+    - ${{ inputs.registry-name }}

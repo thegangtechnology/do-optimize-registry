@@ -1,5 +1,7 @@
-name: "Run doctl Command"
-on: [push]
+name: "Run Garbage-collection"
+on:
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: [self-hosted]

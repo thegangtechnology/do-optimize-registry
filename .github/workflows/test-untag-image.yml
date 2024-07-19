@@ -1,0 +1,14 @@
+name: "Untag image"
+on: [push]
+jobs:
+  build:
+    runs-on:  [self-hosted]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Python Docker Action
+        uses: thegangtechnology/do-optimize-registry/untag-image@main
+        with:
+          do-token: ${{ secrets.DO_TOKEN }}
+          registry-name: tt-exchange
