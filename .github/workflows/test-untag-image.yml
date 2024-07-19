@@ -13,4 +13,4 @@ jobs:
         uses: thegangtechnology/do-optimize-registry/untag-image@main
         with:
           do-token: ${{ secrets.DO_TOKEN }}
-          registry-name: tt-exchange
+          repository-name: tt-exchange
