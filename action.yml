@@ -8,9 +8,14 @@ inputs:
   registry-name:
     description: 'Image registry name'
     required: true
+
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  args:
-    - ${{ inputs.do-token }}
-    - ${{ inputs.registry-name }}
+  using: 'composite'
+  steps:
+    - name: Install doctl
+      uses: digitalocean/action-doctl@v2
+      with:
+        token: ${{ inputs.do-token}}
+
+    - name: Run clean garbage-collection
+      run: doctl registry garbage-collection start ${{ inputs.registry-name }} -f --include-untagged-m
