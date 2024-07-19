@@ -7,8 +7,8 @@ RUN cd ~ &&\
 
 WORKDIR app/
 
-COPY /untag-image/untag-image.py .
-COPY /untag-image/entrypoint.sh .
+COPY ./untag-image/untag-image.py .
+COPY ./untag-image/entrypoint.sh .
 
 # Make the entrypoint script executable
 RUN chmod +x entrypoint.sh
