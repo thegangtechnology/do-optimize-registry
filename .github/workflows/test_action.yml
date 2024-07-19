@@ -1,15 +1,14 @@
-name: DO optimized registry storage
-
-on:
-  workflow_dispatch:
-
+name: "Run doctl Command"
+on: [push]
 jobs:
-  optimize_registry:
+  build:
     runs-on: [self-hosted]
-    name: Optimize registry storage
     steps:
-      - name: Run Garbage collection
-        uses: ./ # Uses an action in the root directory
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run doctl command executor
+        uses: thegangtechnology/do-optimize-registy/garbage-collection@main
         with:
           do-token: ${{ secrets.DO_TOKEN }}
-          registry-name: tt-exchange
+          registry-name: "tt-exchange"

@@ -1,0 +1,20 @@
+name: 'doctl command executor'
+description: 'Authenticate with DigitalOcean and run a specified doctl command'
+inputs:
+  do-token:
+    description: 'DigitalOcean Personal Access Token (PAT)'
+    required: true
+  registry-name:
+    description: 'registry that you want to run garbage collection'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Install doctl
+      uses: digitalocean/action-doctl@v2
+      with:
+        token: ${{ inputs.do-token }}
+
+    - name: Execute doctl command
+      run: doctl registry garbage-collection start ${{ inputs.registry-name }} -f --include-untagged-manifests
