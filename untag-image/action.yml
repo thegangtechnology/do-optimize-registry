@@ -4,8 +4,8 @@ inputs:
   do-token:
     description: 'DigitalOcean Personal Access Token (PAT)'
     required: true
-  registry-name:
-    description: 'registry that you want to run garbage collection'
+  repository-name:
+    description: 'repository that you want to run untag'
     required: true
 
 runs:
@@ -13,7 +13,7 @@ runs:
   image: 'Dockerfile'
   env:
     DO_TOKEN: ${{ inputs.do-token }}
-    REGISTRY_NAME: ${{ inputs.registry-name }}
+    REPOSITORY_NAME: ${{ inputs.repository-name }}
   args:
     - ${{ inputs.do-token }}
-    - ${{ inputs.registry-name }}
+    - ${{ inputs.repository-name }}
