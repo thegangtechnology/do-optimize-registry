@@ -18,4 +18,4 @@ runs:
         token: ${{ inputs.do-token}}
 
     - name: Run clean garbage-collection
-      run: doctl registry garbage-collection start ${{ inputs.registry-name }} -f --include-untagged-m
+      run: doctl registry garbage-collection start ${{ inputs.registry-name }} -f --include-untagged-manifests
