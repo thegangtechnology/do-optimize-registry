@@ -17,4 +17,5 @@ runs:
         token: ${{ inputs.do-token }}
 
     - name: Execute doctl command
+      shell: bash
       run: doctl registry garbage-collection start ${{ inputs.registry-name }} -f --include-untagged-manifests
