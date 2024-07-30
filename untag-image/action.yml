@@ -10,7 +10,7 @@ inputs:
 
 runs:
   using: 'docker'
-  image: 'docker://ghcr.io/dawit-cht/container-registry:test'
+  image: 'docker://ghcr.io/thegangtechnology/digitalocean-registry-cleaner:latest'
   env:
     DO_TOKEN: ${{ inputs.do-token }}
     REPOSITORY_NAME: ${{ inputs.repository-name }}

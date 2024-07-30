@@ -16,6 +16,6 @@ COPY untag-image/entrypoint.sh .
 RUN chmod +x entrypoint.sh
 
 # Define the default entry point
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["/app/entrypoint.sh"]
 
 
