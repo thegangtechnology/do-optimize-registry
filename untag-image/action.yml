@@ -10,7 +10,7 @@ inputs:
 
 runs:
   using: 'docker'
-  image: 'Dockerfile'
+  image: 'ghcr.io/dawit-cht/container-registry:test'
   env:
     DO_TOKEN: ${{ inputs.do-token }}
     REPOSITORY_NAME: ${{ inputs.repository-name }}
