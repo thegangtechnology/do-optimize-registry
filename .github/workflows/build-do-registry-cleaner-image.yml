@@ -30,7 +30,8 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build ./untage-image/Dockerfile -t ghcr.io/thegangtechnology/digitalocean-image-registry-cleaner:latest
+        cd untag-image
+        docker build . -t ghcr.io/thegangtechnology/digitalocean-image-registry-cleaner:latest
         docker tag ghcr.io/thegangtechnology/digitalocean-image-registry-cleaner:latest ghcr.io/thegangtechnology/digitalocean-image-registry-cleaner:${{ github.ref_name}}
 
     - name: Push Docker image
