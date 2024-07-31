@@ -22,7 +22,7 @@ jobs:
       uses: docker/login-action@v3
       with:
         registry: ghcr.io
-        username: thegangtechnology
+        username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build and push Docker image
@@ -30,4 +30,6 @@ jobs:
       with:
         context: ./untag-image
         push: true
-        tags: ghcr.io/thegangtechnology/digitalocean-image-registry-cleaner:latest
+        tags: |
+          ghcr.io/thegangtechnology/digitalocean-image-registry-cleaner:latest
+          ghcr.io/thegangtechnology/digitalocean-image-registry-cleaner:${{ github.ref_name }}
