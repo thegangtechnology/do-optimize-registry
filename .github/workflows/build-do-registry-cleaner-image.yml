@@ -6,6 +6,8 @@ on:
       - '*'
   workflow_dispatch:
 
+permissions:
+  packages: write
 
 jobs:
   build:
@@ -22,7 +24,7 @@ jobs:
       uses: docker/login-action@v3
       with:
         registry: ghcr.io
-        username: ${{ github.actor }}
+        username: thegangtechnology
         password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build and push Docker image
