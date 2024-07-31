@@ -28,6 +28,6 @@ jobs:
     - name: Build and push Docker image
       uses: docker/build-push-action@v6
       with:
-        context: .
+        context: ./untage-image
         push: true
-        tags: ghcr.io/$thegangtechnology/digitalocean-image-registry-cleaner:latest
+        tags: ghcr.io/thegangtechnology/digitalocean-image-registry-cleaner:latest
