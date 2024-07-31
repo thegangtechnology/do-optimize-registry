@@ -6,10 +6,6 @@ on:
       - '*'
   workflow_dispatch:
 
-permissions:
-  packages: write
-  contents: read
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -35,6 +31,8 @@ jobs:
         docker tag ghcr.io/thegangtechnology/digitalocean-image-registry-cleaner:latest ghcr.io/thegangtechnology/digitalocean-image-registry-cleaner:${{ github.ref_name}}
 
     - name: Push Docker image
+      permissions:
+        packages: write
       run: |
         docker push ghcr.io/thegangtechnology/digitalocean-image-registry-cleaner:latest
         docker push ghcr.io/thegangtechnology/digitalocean-image-registry-cleaner:${{ github.ref_name}}
