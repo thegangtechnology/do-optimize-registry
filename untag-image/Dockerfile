@@ -5,7 +5,7 @@ RUN cd ~ &&\
     tar xf ~/doctl-1.104.0-linux-amd64.tar.gz && \
     mv ~/doctl /usr/local/bin
 
-WORKDIR app/
+WORKDIR /app
 
 RUN ls
 
