@@ -21,4 +21,4 @@ cat normalize-list.txt
 
 # Run the Python script with any arguments passed to the container
 echo "Executing Python script..."
-python3 untag-image.py --repo $REPOSITORY_NAME
+python3 /app/untag-image.py --repo $REPOSITORY_NAME
