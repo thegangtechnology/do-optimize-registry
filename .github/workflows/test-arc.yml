@@ -1,16 +1,12 @@
-name: "Run test arc"
+name: Actions Runner Controller Demo
 on:
   push:
-    branches:
-      - jeep/test-arc
+    - jeep/test-arc
+  workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: test
+  Explore-GitHub-Actions:
+    # You need to use the INSTALLATION_NAME from the previous step
+    runs-on: arc-runner-set
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Display current directory
-        run: pwd
-
+    - run: echo "🎉 This job uses runner scale set runners!"
