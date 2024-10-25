@@ -1,7 +1,8 @@
 name: Actions Runner Controller Demo
 on:
   push:
-    - jeep/test-arc
+    branch:
+      - jeep/test-arc
   workflow_dispatch:
 
 jobs:
