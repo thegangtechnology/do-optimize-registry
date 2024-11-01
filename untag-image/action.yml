@@ -7,6 +7,14 @@ inputs:
   repository-name:
     description: 'repository that you want to run untag'
     required: true
+  days:
+    description: 'Number of days for keeping images. Default to 0 if specific keep-latest,  default to 7 if not specific keep-latest'
+    required: false
+  keep-latest:
+    description: 'Untag versions from imgages older than keep_latest images, Default to 0 (Disable)'
+    required: false
+    default: 0
+
 
 runs:
   using: 'docker'
@@ -14,6 +22,10 @@ runs:
   env:
     DO_TOKEN: ${{ inputs.do-token }}
     REPOSITORY_NAME: ${{ inputs.repository-name }}
+    DAYS: ${{ inputs.days }}
+    KEEP_LATEST: ${{ inputs.keep-latest }}
   args:
     - ${{ inputs.do-token }}
     - ${{ inputs.repository-name }}
+    - ${{ inputs.days }}
+    - ${{ inputs.keep-latest }}
