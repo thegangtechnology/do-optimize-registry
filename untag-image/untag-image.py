@@ -10,13 +10,7 @@ parser.add_argument("--days", dest="days" ,help="Number of days for keeping imag
 parser.add_argument("--keep-latest", dest="keep_latest_tags", help="Untag versions from imgages older than keep_latest images, Default to 0 (Disable)", type=int)
 args = parser.parse_args()
 count = 1
-num_latest_image = 3
-
-if not args.days:
-    if args.keep_latest_tags:
-        args.days = 0
-    else:
-        args.days = 7
+num_latest_image = 5
 
 keep_days = datetime.datetime.now() - datetime.timedelta(days=args.days)
 format = "%Y-%m-%d"

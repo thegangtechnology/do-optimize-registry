@@ -8,8 +8,9 @@ inputs:
     description: 'repository that you want to run untag'
     required: true
   days:
-    description: 'Number of days for keeping images. Default to 0 if specific keep-latest,  default to 7 if not specific keep-latest'
+    description: 'Number of days for keeping images. Default to 7 if not specific keep-latest'
     required: false
+    default: 7
   keep-latest:
     description: 'Untag versions from imgages older than keep_latest images, Default to 0 (Disable)'
     required: false
