@@ -35,15 +35,30 @@ def parse_version(version):
 
 # Check if time is older than set threshold
 def compare_date(data_time, threshold_time):
-    if data_time < threshold_time:
-        return True
-    else:
-        return False
+    return data_time <= threshold_time
 
 
-# Untag old image
-def create_untag_images_list(file, repository, keep_days=None, keep_tags=None, untag_list=[], tag_list=[]):
+# Remove deployed version from untag list
+def keep_deployed_version(tag_list=[], untag_list=[], version_list=[]):
+    keep_list = []
+    final_list = untag_list
+    for tag in tag_list:
+        if tag in version_list or tag == "develop":
+            index_keep = tag_list.index(tag)
+            for i in range(5):
+                keep_list.append(tag_list[index_keep + i])
+    print(f"keep version list : {keep_list}")
+    # remove keep version from untag list
+    for keep_version in keep_list:
+        if keep_version in untag_list:
+            final_list.remove(keep_version)
+    return final_list
+
+
+# create list of old image
+def create_untag_images_list(file, keep_days=None, keep_tags=None, tag_list=None):
     # setup data
+    untag_list = []
     date_format = "%Y-%m-%d"
     with open(file) as file:
         while data := file.readline():
@@ -63,8 +78,9 @@ def create_untag_images_list(file, repository, keep_days=None, keep_tags=None, u
                     untag_list.append(tags[-1])
                 else:
                     print(f"tag: {tags[-1]} on {data_time} is not outdated yet")
+    return untag_list
 
-
+# Run doctl to untag image
 def untag_image(untag_list, repository):
     for image in untag_list:
         print(f"untag: {image}")
@@ -87,44 +103,35 @@ def main():
     staging_url = f"https://staging.app.ruammitr.io"
     production_url = f"https://app.ruammitr.io"
     untag_sha_list = []
-    untag_verison_list = []
     tag_list = []
-    keep_list = []
 
     # Set keep threshold and untag image
     # Untag only sha images
     if args.days is not None:
         keep_days = datetime.datetime.now() - datetime.timedelta(days=args.days)
         sha_filename = "normalize-list.txt"
-        create_untag_images_list(sha_filename, args.repository, keep_days=keep_days, untag_list=untag_sha_list)
+        untag_sha_list = create_untag_images_list(sha_filename, keep_days=keep_days)
 
     # # Untag version images
     if args.months is not None:
         keep_tags = datetime.datetime.now() - relativedelta(months=args.months)
-        version_list = get_version(repository=args.repository, staging_url=staging_url, production_url=production_url)
-        # version_list = ['0.2.0-4', '0.1.10']
+        # version_list = get_version(repository=args.repository, staging_url=staging_url, production_url=production_url)
+        version_list = ['0.2.0-4', '0.1.10']
         version_filename = "normalize-version-list.txt"
-        create_untag_images_list(version_filename, args.repository, keep_tags=keep_tags, untag_list=untag_verison_list, tag_list=tag_list)
+        untag_version_list = create_untag_images_list(version_filename, keep_tags=keep_tags, tag_list=tag_list)
         # Sort list
         tag_list.remove("develop")
         sorted_tag = sorted(tag_list, key=parse_version, reverse=True)
         sorted_tag = ["develop"] + sorted_tag
-        for tag in sorted_tag:
-            if tag in version_list or tag == "develop":
-                index_keep = sorted_tag.index(tag)
-                for i in range(5):
-                    keep_list.append(sorted_tag[index_keep+i])
-        sorted_untag_versions_list = sorted(untag_verison_list, key=parse_version, reverse=True)
-        print(f"keep version list : {keep_list}")
-        # remove keep version from untag list
-        for keep_version in keep_list:
-            if keep_version in sorted_untag_versions_list:
-                sorted_untag_versions_list.remove(keep_version)
+        sorted_untag_versions_list = sorted(untag_version_list, key=parse_version, reverse=True)
+        # Remove deployed tag from untag list
+        final_list = keep_deployed_version(tag_list=sorted_tag, untag_list=sorted_untag_versions_list, version_list=version_list)
+
     # Untag image
     print(f"untag sha list: {untag_sha_list}")
     untag_image(untag_sha_list, args.repository)
     print(f"untag version list: {sorted_untag_versions_list}")
-    untag_image(sorted_untag_versions_list, args.repository)
+    untag_image(final_list, args.repository)
 
 
 # Standard Script Entry Point
