@@ -35,5 +35,4 @@ jobs:
 
     - name: Push Docker image
       run: |
-        docker push ghcr.io/thegangtechnology/digitalocean-image-registry-cleaner:latest
         docker push ghcr.io/thegangtechnology/digitalocean-image-registry-cleaner:${{ github.ref_name}}
