@@ -107,7 +107,7 @@ def main():
         create_untag_images_list(version_filename, args.repository, keep_tags=keep_tags, untag_list=untag_verison_list, tag_list=tag_list)
         # Sort list
         tag_list.remove("develop")
-        sorted_tag = sorted(tag_list, key=parse_version, reverse=True )
+        sorted_tag = sorted(tag_list, key=parse_version, reverse=True)
         sorted_tag = ["develop"] + sorted_tag
         for tag in sorted_tag:
             if tag in version_list or tag == "develop":
