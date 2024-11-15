@@ -19,7 +19,7 @@ inputs:
 
 runs:
   using: 'docker'
-  image: 'docker://ghcr.io/thegangtechnology/digitalocean-image-registry-cleaner:latest'
+  image: 'docker://ghcr.io/thegangtechnology/digitalocean-image-registry-cleaner:jv-custom'
   env:
     DO_TOKEN: ${{ inputs.do-token }}
     REPOSITORY_NAME: ${{ inputs.repository-name }}
