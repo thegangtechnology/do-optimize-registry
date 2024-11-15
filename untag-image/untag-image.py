@@ -67,7 +67,7 @@ def create_untag_images_list(file, repository, keep_days=None, keep_tags=None, u
 def untag_image(untag_list, repository):
     for image in untag_list:
         print(f"untag: {image}")
-        subprocess.run(["doctl", "registry", "repository", "dt", repository, image, "-f"])
+        #subprocess.run(["doctl", "registry", "repository", "dt", repository, image, "-f"])
 
 
 # Main Execution Function
