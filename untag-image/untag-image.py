@@ -46,7 +46,8 @@ def keep_deployed_version(tag_list=[], untag_list=[], version_list=[]):
         if tag in version_list or tag == "develop":
             index_keep = tag_list.index(tag)
             for i in range(5):
-                keep_list.append(tag_list[index_keep + i])
+                if tag_list[index_keep + i] not in keep_list:
+                    keep_list.append(tag_list[index_keep + i])
     print(f"keep version list : {keep_list}")
     print(f"keep extra {len(keep_list)} versions")
     # remove keep version from untag list
@@ -117,7 +118,7 @@ def main():
     if args.months is not None:
         keep_tags = datetime.datetime.now() - relativedelta(months=args.months)
         version_list = get_version(repository=args.repository, staging_url=staging_url, production_url=production_url)
-        #version_list = ['0.2.0-4', '0.1.10']
+        # version_list = ['0.2.2-4', '0.1.10']
         version_filename = "normalize-version-list.txt"
         untag_version_list = create_untag_images_list(version_filename, keep_tags=keep_tags, tag_list=tag_list, version_list=version_list)
         # Sort list
