@@ -1,1 +1,3 @@
 *.txt
+.idea
+tests/__pycache__/*
