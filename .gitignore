@@ -1,1 +1,3 @@
 *.txt
+.idea/
+untag-image/tests/__pycache__/
