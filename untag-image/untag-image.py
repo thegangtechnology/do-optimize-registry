@@ -20,11 +20,11 @@ def compare_date(data_time, threshold_time):
 
 
 # Remove deployed version from untag list
-def keep_deployed_version(tag_list=[], untag_list=[], version_list=[]):
+def keep_deployed_version(tag_list=[], untag_list=[]):
     keep_list = []
     final_list = untag_list
     for tag in tag_list:
-        if tag in version_list or tag == "develop" or tag == "staging" or tag == "production":
+        if tag == "develop" or tag == "staging" or tag == "production" or tag == "latest":
             index_keep = tag_list.index(tag)
             for i in range(5):
                 if tag_list[index_keep + i] not in keep_list:
@@ -51,17 +51,8 @@ def create_untag_images_list(file, keep_days=None, keep_tags=None, tag_list=None
             data_tags = re.search(r'\[(.*?)\]', str(data)).group(0)[1:-1]
             tags = data_tags.split(' ')
             for tag in tags:
-                if tag == "develop":
-                    selected_tag = "develop"
-                    break
-                if tag == "staging":
-                    selected_tag = "staging"
-                    break
-                if tag == "production":
-                    selected_tag = "production"
-                    break
-                if tag == "latest":
-                    selected_tag = "latest"
+                if tag == "develop" or tag == "staging" or tag == "production" or tag == "latest":
+                    selected_tag = "env"
                     break
                 if bool(re.match(semver_pattern, tag)):
                     selected_tag = tag
@@ -76,16 +67,18 @@ def create_untag_images_list(file, keep_days=None, keep_tags=None, tag_list=None
                 else:
                     print(f"tag: {data_tags} on {data_time} is not outdated yet")
             if keep_tags is not None:
-                tag_list.append(selected_tag)
+                if selected_tag != "env":
+                    tag_list.append(selected_tag)
                 if compare_date(data_time, keep_tags):
                     #print(f"Untag {data_tags} from repository")
-                    untag_list.append(selected_tag)
+                    if selected_tag != "env":
+                        untag_list.append(selected_tag)
+                    else:
+                        print(f"tag is deployed version on dev or staging or production")
                 else:
                     print(f"tag: {selected_tag} on {data_time} is not outdated yet")
-            for tag in tags:
-                if tag == "latest":
-                    version_list.append(selected_tag)
-                    print(f"{selected_tag} will not be deleted")
+        if "" in untag_list:
+            untag_list.remove("")
     return untag_list
 
 
@@ -122,22 +115,15 @@ def main():
         keep_tags = datetime.datetime.now() - relativedelta(months=args.months)
         version_filename = "normalize-version-list.txt"
         untag_version_list = create_untag_images_list(version_filename, keep_tags=keep_tags, tag_list=tag_list, version_list=version_list)
-        print(f"tag_list: {tag_list}")
-        # Sort list
-        tag_list.remove("develop")
-        tag_list.remove("latest")
+        # Sort lists
         tag_list.remove("")
-        if "staging" in tag_list:
-            tag_list.remove("staging")
-        if "production" in tag_list:
-            tag_list.remove("production")
+        print(f"tag_list: {tag_list}")
         sorted_tag = sorted(tag_list, key=parse_version, reverse=True)
         sorted_tag = ["develop", "staging", "production", "latest"] + sorted_tag
-        if "" in untag_version_list:
-            untag_version_list.remove("")
+        print(f"untag_version_list: {untag_version_list}")
         sorted_untag_versions_list = sorted(untag_version_list, key=parse_version, reverse=True)
         # Remove deployed tag from untag list
-        final_list = keep_deployed_version(tag_list=sorted_tag, untag_list=sorted_untag_versions_list, version_list=version_list)
+        final_list = keep_deployed_version(tag_list=sorted_tag, untag_list=sorted_untag_versions_list)
         print(f"final_list: {final_list}")
 
     # Untag only sha images
